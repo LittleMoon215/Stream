@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stream</title>
+    <script type="text/javascript" src={% static "/ovenplayer/ovenplayer.js" %}></script>
+    <style>
+        .wrapper{
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>OvenPlayer</h1>
+        <div id="player"></div>
+    </div>
+   <script>
+        const totalTestSources = [
+            {
+                type: 'webrtc',
+                file:  'ws://90.188.92.68:3333/app/stream',
+                label: '1080',
+                default: 'true'
+            },
+        ];
+        var player = OvenPlayer.create("player", {
+            debug : true,
+            sources: totalTestSources
+        });
+    </script>
+</body>
+</html>
