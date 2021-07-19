@@ -13,6 +13,10 @@
     </style>
 </head>
 <body>
+{% if user.is_authenticated %}
+    <a href="{% url "logout_view" %}">
+        <button class="btn mx-1 my-xl-0 my-2" type="button">Выйти</button>
+    </a>
     <div class="wrapper">
         <h1>OvenPlayer</h1>
         <div id="player"></div>
@@ -21,9 +25,19 @@
         const totalTestSources = [
             {
                 type: 'webrtc',
-                file:  'ws://90.188.92.68:3333/app/stream',
+                file:  '{{ key }}',
                 label: '1080',
                 default: 'true'
+            },
+            {
+                type: 'webrtc',
+                file:  'ws://90.188.92.68:3333/app/stream_720_60?policy=eyJ1cmxfZXhwaXJlIjo3OTUyMzIwODYxMDAwfQ&signature=mPeXR2ucbhKeEiSKRRps64mpaOY',
+                label: '720_60'
+            },
+            {
+                type: 'webrtc',
+                file:  'ws://90.188.92.68:3333/app/stream_720_30?policy=eyJ1cmxfZXhwaXJlIjo3OTUyMzIwODYxMDAwfQ&signature=FgQYneZaW3UYQmrOrx2N-YP8QyU ',
+                label: '720_30'
             },
         ];
         var player = OvenPlayer.create("player", {
@@ -31,5 +45,37 @@
             sources: totalTestSources
         });
     </script>
+{% else %}
+<div class="navbar sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Тест</a>
+
+        <form class="form-inline my-2 my-lg-0" action="{% url "login_view" %}" autocomplete="off" method="POST">
+            {% csrf_token %}
+            <div class="col-auto pl-0">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text "><i class="fa fa-user"></i></div>
+                    </div>
+                    <input type="text" class="form-control my-2 my-sm-0 mr-2" value="" placeholder="Логин" name="username" required autofocus maxlength="25" required id="id_username">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa fa-lock"></i></div>
+                    </div>
+                    <input type="password" class="form-control my-2 my-sm-0" value="" placeholder="Пароль" type="password" name="password" required id="id_password">
+                </div>
+            </div>
+            <div class="col-auto pl-0 pr-0">
+                <button class="btn btn-outline-light my-2 my-sm-0 mr-2" type="submit">Войти!</button>
+            </div>
+
+        </form>
+        <form>
+            <a href="{% url "register_view" %}">
+                <button class="btn btn-outline-primary mx-1 my-xl-0 my-2" type="button">Зарегестрироваться!</button>
+            </a>
+        </form>
+
+    </div>
+{% endif %}
+{% block body %} {% endblock %}
 </body>
 </html>
