@@ -1,45 +1,27 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
+from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.response import Response
+import rest_framework.status
+from rest_framework.permissions import AllowAny
+from .serializers import RegisterSerializer, MyTokenObtainPairSerializer
+from user.models import User
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from user.forms import RegistrationForm
-from streampage.views import index
+class RegisterView(CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
 
 
-def login_view(request):
-    if not request.user.is_authenticated:
-        if request.method == "POST":
-            form = AuthenticationForm(data=request.POST)
-            username = form.data["username"]
-            password = form.data["password"]
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                if next is not None:
-                    return redirect("index")
-                else:
-                    return redirect("index")
-            else:
-                return render(request, "main.html", {"message": "Неверный логин или пароль"})
-    else:
-        return redirect("main")
+class MyObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
 
-def register_view(request):
-    if request.method == "POST":
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password1"]
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect("index")
-    else:
-        form = RegistrationForm()
-    context = {"form": form}
-    return render(request, 'register.html', context)
+class StreamKey(ListAPIView):
+    def post(self, request):
 
-def logout_view(request):
-    if request.user.is_authenticated:
-        logout(request)
-    return redirect("index")
+        username = self.request.data.get('username')
+        try:
+            streamKey = User.objects.get(username=username).stream_key
+        except User.DoesNotExist:
+            return Response({'detail': rest_framework.status.HTTP_404_NOT_FOUND})
+        return Response({'privateStreamKey': streamKey, 'detail': rest_framework.status.HTTP_200_OK})

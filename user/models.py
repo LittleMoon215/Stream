@@ -27,7 +27,9 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField('Имя пользователя', db_index=True, max_length=20, unique=True)
     email = models.EmailField('Email', db_index=True, unique=True)
-    stream_key = models.TextField(null=True)
+    stream_key = models.TextField(unique=True)
+    watch_key = models.TextField(unique=True)
+    stream_name = models.TextField(default="Stream Name")
     is_active = models.BooleanField('Активен', default=True)
     is_staff = models.BooleanField('Администратор', default=False)
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)

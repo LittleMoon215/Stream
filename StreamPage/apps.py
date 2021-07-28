@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class StreampageConfig(AppConfig):
+class StreamPageConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'streampage'
+    name = 'StreamPage'

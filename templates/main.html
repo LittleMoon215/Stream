@@ -25,24 +25,25 @@
         const totalTestSources = [
             {
                 type: 'webrtc',
-                file:  '{{ key }}',
+                file:  'ws://90.188.92.68:3333/app/moony?policy=eyJ1cmxfZXhwaXJlIjo3OTU1MDg5MzQ1MDAwfQ==&signature=XWn2gtkngCb5Dihm2aeQa-JTAMs',
                 label: '1080',
                 default: 'true'
             },
             {
                 type: 'webrtc',
-                file:  'ws://90.188.92.68:3333/app/stream_720_60?policy=eyJ1cmxfZXhwaXJlIjo3OTUyMzIwODYxMDAwfQ&signature=mPeXR2ucbhKeEiSKRRps64mpaOY',
+                file:  'ws://90.188.92.68:3333/app/moony_720_60?policy=eyJ1cmxfZXhwaXJlIjo3OTU1MDg5MzQ1MDAwfQ&signature=cQgQAQwTJzFW6uNHlMB1-jFxa4c',
                 label: '720_60'
             },
             {
                 type: 'webrtc',
-                file:  'ws://90.188.92.68:3333/app/stream_720_30?policy=eyJ1cmxfZXhwaXJlIjo3OTUyMzIwODYxMDAwfQ&signature=FgQYneZaW3UYQmrOrx2N-YP8QyU ',
+                file:  'ws://90.188.92.68:3333/app/moony_720_30?policy=eyJ1cmxfZXhwaXJlIjo3OTU1MDg5MzQ1MDAwfQ&signature=_Onzs2_AkAElILRC1kZHsjQWJa0',
                 label: '720_30'
             },
         ];
         var player = OvenPlayer.create("player", {
             debug : true,
-            sources: totalTestSources
+            sources: totalTestSources,
+            image: " ",
         });
     </script>
 {% else %}
